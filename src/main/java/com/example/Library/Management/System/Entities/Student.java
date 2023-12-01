@@ -1,9 +1,6 @@
 package com.example.Library.Management.System.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +24,7 @@ public class Student {
 
     @Column(name="contactNo",unique = true,nullable = false)
     private String mobileNo;
+
+    @OneToOne(mappedBy = "student",cascade = CascadeType.ALL)
+    private LibraryCard libraryCard;
 }

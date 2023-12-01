@@ -16,7 +16,7 @@ import lombok.Setter;
 
 public class LibraryCard {
     @Id
-    private Integer cardNo;
+    private Integer cardNo; //this is act as a PK in library card table
 
     @Enumerated(value = EnumType.STRING)  // sql only knows primitive datatypes this annotation helps us when userdefine datatypes are there
     private CardStatus cardStatus;
@@ -26,5 +26,6 @@ public class LibraryCard {
      */
     @OneToOne
     @JoinColumn
-    private Student student;
+    private Student student; // this is act as a foreign key of library card table
+    // this variable has to be put in mapped attribute in the parent class
 }
