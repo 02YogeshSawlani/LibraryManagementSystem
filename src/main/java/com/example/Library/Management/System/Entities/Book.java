@@ -15,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Book {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bookId;
 
     private String bookName;
@@ -23,6 +24,7 @@ public class Book {
 
     private int noOfPages;
 
+    @Enumerated(value = EnumType.STRING)
     private Genre genre;
 
     private double rating;

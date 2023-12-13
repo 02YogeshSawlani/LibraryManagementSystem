@@ -1,6 +1,7 @@
 package com.example.Library.Management.System.Service;
 
 import com.example.Library.Management.System.Entities.Author;
+import com.example.Library.Management.System.Entities.Book;
 import com.example.Library.Management.System.Repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,19 @@ public class AuthorService {
 
     }
 
+    public List<String> getBookNameList(Integer authorId){
+        List<String> bookName=new ArrayList<>();
 
+        // we have authorId--> try to get author first
+        Author author=authorRepository.findById(authorId).get();
+        List<Book> bookLists=author.getBookList();
+
+        for(Book book:bookLists){
+            bookName.add(book.getBookName());
+        }
+
+           return bookName;
+
+    }
 
 }
