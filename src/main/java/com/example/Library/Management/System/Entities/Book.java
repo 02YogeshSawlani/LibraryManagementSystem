@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table  // If you not write table name then it will consider class name as table name
 @Setter
@@ -32,6 +35,10 @@ public class Book {
     @ManyToOne
     @JoinColumn
     private Author author;
+
+    // Connecting to Transaction
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL)
+    private List<Transaction> transactionList=new ArrayList<>();
 
 
 }
