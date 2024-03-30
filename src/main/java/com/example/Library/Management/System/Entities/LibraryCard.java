@@ -25,6 +25,8 @@ public class LibraryCard {
     @Enumerated(value = EnumType.STRING)  // sql only knows primitive datatypes this annotation helps us when userdefine datatypes are there
     private CardStatus cardStatus;
 
+    private Integer noOfBookIssued;
+
     private String nameOnCard;
     /*
        Library  card need to be connect with student table

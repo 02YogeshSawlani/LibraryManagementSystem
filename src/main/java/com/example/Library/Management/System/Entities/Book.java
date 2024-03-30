@@ -30,6 +30,7 @@ public class Book {
     @Enumerated(value = EnumType.STRING)
     private Genre genre;
 
+    private boolean isAvailable;
     private double rating;
 
     @ManyToOne
