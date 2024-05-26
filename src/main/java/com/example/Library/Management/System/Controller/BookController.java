@@ -29,7 +29,7 @@ public class BookController {
 
     @GetMapping("/getBooksByGenre")
     public List<String> getBooksByGenre(@RequestParam("genre") Genre genre){
-
+   return null;
 
     }
 

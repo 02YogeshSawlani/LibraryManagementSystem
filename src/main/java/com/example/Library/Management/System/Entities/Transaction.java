@@ -25,7 +25,7 @@ public class Transaction {
     @Enumerated(value = EnumType.STRING)
     private TransactionStatus transactionStatus;
 
-    private Date issuedDate;
+    //private Date issuedDate;
 
     private Date returnDate;
 

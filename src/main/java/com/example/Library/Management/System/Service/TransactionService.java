@@ -12,10 +12,13 @@ import com.example.Library.Management.System.Repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TransactionService {
+
     @Autowired
     private TransactionRepository transactionRepository;
 
@@ -27,7 +30,7 @@ public class TransactionService {
 
     private static final Integer MAX_LIMIT_OF_BOOK=3;
 
-
+    private static final Integer FINE_PER_DAY=5;
 
     public String issueBook(Integer bookId,Integer cardId) throws Exception{
 
@@ -70,12 +73,59 @@ public class TransactionService {
         /* If I pass all of above criteria ie validation then it mean now I can create success case that is transaction can be initialize now */
 
         //creating the transaction Entity
+        transaction.setTransactionStatus(TransactionStatus.ISSUED);
 
+        libraryCard.setNoOfBookIssued(libraryCard.getNoOfBookIssued()+1);
 
-
+        book.setAvailable(false);
         //setting FK
+       transaction.setBook(book);
+       transaction.setCard(libraryCard);
 
         //saving relevant Entities
+        book.getTransactionList().add(transaction);
+        libraryCard.getTransactionList().add(transaction);
+
+        //save parent entities
+       transactionRepository.save(transaction);
+        return "The book with bookId "+bookId+" has been issued" + "to cars with "+cardId;
     }
+
+    public String returnBook(Integer bookId,Integer cardId){
+        Book book=bookRepository.findById(bookId).get();
+        LibraryCard card=cardRepository.findById(cardId).get();
+
+        //I need to find out that issued transaction
+        Transaction transaction=transactionRepository.findTransactionByBookAndCardAndTransactionStatus(book,card,TransactionStatus.ISSUED);
+        Date issueDate= transaction.getCreatedOn();
+
+        //predefied method to use calculate days
+        long millSeconds=Math.abs(System.currentTimeMillis()-issueDate.getTime());
+        long days= TimeUnit.DAYS.convert(millSeconds,TimeUnit.MILLISECONDS);
+        int fineAmount=0;
+
+        if(days>15){
+            fineAmount= Math.toIntExact((days - 15) * FINE_PER_DAY);
+        }
+        Transaction newTransaction=new Transaction();
+        newTransaction.setTransactionStatus(TransactionStatus.COMPLETED);
+
+        newTransaction.setReturnDate(new Date());
+        newTransaction.setFine(fineAmount);
+
+        //setting FK's
+        newTransaction.setBook(book);
+        newTransaction.setCard(card);
+
+        book.setAvailable(true);
+        card.setNoOfBookIssued(card.getNoOfBookIssued()-1);
+
+        book.getTransactionList().add(newTransaction);
+        card.getTransactionList().add(newTransaction);
+
+        transactionRepository.save(newTransaction);
+
+        return  "Book has been returned";
+        }
 
 }

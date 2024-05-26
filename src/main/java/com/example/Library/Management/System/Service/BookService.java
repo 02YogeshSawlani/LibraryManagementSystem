@@ -49,7 +49,7 @@ public class BookService {
 
     public List<String> getBooksByGenre(Genre genre){
 
-        List<Book> bookList= bookRepository.findBookByGenre(genre);
+        List<Book> bookList= bookRepository.findBooksByGenre(genre);
         List<String> bookNames= new ArrayList<>();
 
         for(Book book:bookList){
